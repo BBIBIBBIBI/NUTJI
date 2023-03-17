@@ -11,9 +11,13 @@ import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.room.Room;
 
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+
+import org.techtown.dontlate.data.AlarmDao;
+import org.techtown.dontlate.data.AlarmDatabase;
 
 import java.util.ArrayList;
 
@@ -55,10 +59,15 @@ public class ScheduleAdapter extends RecyclerView.Adapter<ScheduleAdapter.ViewHo
                             .setPositiveButton("확인", new DialogInterface.OnClickListener() {
                                 @Override
                                 public void onClick(DialogInterface dialogInterface, int i) {
+
+                                    AlarmDatabase adb = Room.databaseBuilder(v.getContext(),AlarmDatabase.class,"alarm_database").allowMainThreadQueries().build();
+                                    AlarmDao alarmDao = adb.alarmDao();
+
                                     int pos = getAdapterPosition();
                                     ScheduleListItem item = schedules.get(pos);
                                     String name = item.getScheduleName();
 
+                                    alarmDao.deletealarm(name);
                                     FirebaseDatabase.getInstance().getReference().child("Nutji").child("Schedule").child("월요일").child(name).removeValue();
 
                                     schedules.remove(getAdapterPosition());

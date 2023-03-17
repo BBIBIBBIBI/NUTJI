@@ -108,10 +108,12 @@ public class TimePickerActivity extends AppCompatActivity {
         finish();
     }
 
+    // 사용자가 선택한 요일, 시간, 제목, 메모를 입력받아 Alarm 객체 생성
     private void scheduleAlarm() {
         int alarmId = new Random().nextInt(Integer.MAX_VALUE);
 
-        if(mon.isChecked()||tue.isChecked()||wed.isChecked()||thu.isChecked()||fri.isChecked()||sat.isChecked()||sun.isChecked()){
+        if(mon.isChecked()||tue.isChecked()||wed.isChecked()||
+                thu.isChecked()||fri.isChecked()||sat.isChecked()||sun.isChecked()){
 
             Alarm alarm = new Alarm(
                     alarmId,
@@ -131,9 +133,7 @@ public class TimePickerActivity extends AppCompatActivity {
                     sun.isChecked()
             );
 
-
             createAlarmViewModel.insert(alarm);
-
             alarm.schedule(getApplicationContext());
 
         } else {

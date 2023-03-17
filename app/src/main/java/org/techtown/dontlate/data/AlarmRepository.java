@@ -38,4 +38,10 @@ public class AlarmRepository {
     public LiveData<List<Alarm>> getAlarmsLiveData() {
         return alarmsLiveData;
     }
+
+    public void deletealarm(String title){
+        AlarmDatabase.databaseWriteExecutor.execute(()->{
+            alarmDao.deletealarm(title);
+        });
+    }
 }

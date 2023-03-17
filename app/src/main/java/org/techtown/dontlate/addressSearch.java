@@ -46,10 +46,7 @@ public class addressSearch extends AppCompatActivity {
 
     public void init_webView() {
 
-        // WebView 설정
         daum_webView = (WebView) findViewById(R.id.daum_webview);
-
-        // JavaScript 허용
         daum_webView.getSettings().setJavaScriptEnabled(true);
 
         // JavaScript의 window.open 허용
@@ -63,17 +60,17 @@ public class addressSearch extends AppCompatActivity {
 
         // webview url load. php 파일 주소
         daum_webView.loadUrl("http://10.0.2.2:8000/2B/1906050/doro.php");
-
     }
 
 
     private class AndroidBridge {
-
         @JavascriptInterface
         public void setAddress(final String arg1, final String arg2, final String arg3) {
+
             handler.post(new Runnable() {
                 @Override
                 public void run() {
+                    // 입력받은 주소 문자열 변환
                     DORO = String.format("%s %s", arg2, arg3);
                     daum_result.setText(DORO);
 
@@ -85,7 +82,6 @@ public class addressSearch extends AppCompatActivity {
                     init_webView();
                     finish();
                 }
-
             });
         }
     }

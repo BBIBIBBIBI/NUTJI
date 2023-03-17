@@ -23,4 +23,6 @@ public interface AlarmDao {
     @Delete
     void delete(Alarm alarm);
 
+    @Query("DELETE FROM alarm_table WHERE title = :title")
+    void deletealarm(String title);
 }

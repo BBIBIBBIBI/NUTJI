@@ -65,12 +65,12 @@ public class editSchedule extends AppCompatActivity {
         scheduleList.addItemDecoration(new DividerItemDecoration(this, 1));
         scheduleList.setLayoutManager(layoutManager);
 
+        Sadapter = new ScheduleAdapter(arrayList, this);
+        scheduleList.setAdapter(Sadapter);
+
         arrayList = new ArrayList<>();
         database = FirebaseDatabase.getInstance();
         databaseReference = database.getReference().child("Nutji").child("Schedule").child(day);
-
-        Sadapter = new ScheduleAdapter(arrayList, this);
-        scheduleList.setAdapter(Sadapter);
 
         databaseReference.orderByChild("StartTime").addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
@@ -94,6 +94,7 @@ public class editSchedule extends AppCompatActivity {
                 Intent intent = new Intent(editSchedule.this, addSchedule.class);
                 intent.putExtra("요일", day);
                 startActivity(intent);
+                finish();
             }
         });
 

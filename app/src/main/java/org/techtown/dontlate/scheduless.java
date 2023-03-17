@@ -38,6 +38,7 @@ import java.util.Random;
 
 public class scheduless extends Fragment {
 
+    // Firebase 호출 시점 지정
     private interface FirebaseCallback {
         void onCallback(List<String> listA, List<String> listB, List<String> listN, List<String> listM);
     }
@@ -46,7 +47,7 @@ public class scheduless extends Fragment {
     private FirebaseDatabase database;
     private DatabaseReference databaseReference;
 
-    private String weekDay;
+    private String day;
     private String elementS;
     private String elementE;
 
@@ -70,6 +71,7 @@ public class scheduless extends Fragment {
         addbtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                // 리스트 다이얼로그 생성 후 editSchedule로 요일 값 전달
                 Intent intent = new Intent(getActivity().getApplicationContext(), editSchedule.class);
                 final String[] items = new String[]{"월요일", "화요일", "수요일", "목요일", "금요일", "토요일", "일요일"};
 
@@ -104,9 +106,10 @@ public class scheduless extends Fragment {
             }
         });
 
+        // 시스템 시간 가져오기
         SimpleDateFormat dayFormat = new SimpleDateFormat("EEEE", Locale.KOREA);
         Calendar calendar = Calendar.getInstance();
-        weekDay = dayFormat.format(calendar.getTime());
+        day = dayFormat.format(calendar.getTime());
 
         database = FirebaseDatabase.getInstance();
         databaseReference = database.getReference();
@@ -115,8 +118,8 @@ public class scheduless extends Fragment {
             @Override
                 public void onCallback(List<String> listS, List<String> listE, List<String> listN, List<String> listM) {
 
+                // 시간을 계산하여 테이블 크기를 동적 할당
                 for (int i=0; i<listS.size(); i++) {
-
                     elementS = listS.get(i);
                     elementE = listE.get(i);
 
@@ -134,6 +137,7 @@ public class scheduless extends Fragment {
                     long min = (inputggut.getTime() - inputsijak.getTime()) / (60 * 1000);
                     time = (min / 10);
 
+                    // 일정 테이블 색상 랜덤 설정
                     ArrayList<String> color = new ArrayList<>();
                     color.add("#C5E1A5");
                     color.add("#7CB342");
@@ -149,6 +153,7 @@ public class scheduless extends Fragment {
                     Random random = new Random();
                     int ran = 0;
 
+                    // 일정 테이블 추가
                     for (int j=0; j<listN.size(); j++) {
 
                         ran = random.nextInt(6 - 0 + 1) + 0;
@@ -166,6 +171,7 @@ public class scheduless extends Fragment {
                         table.addView(nameText, params);
                     }
 
+                    // 일정 내용 텍스트 추가
                     for (int k=0; k<listS.size(); k++) {
 
                         TextView memoText = new TextView(getActivity().getApplicationContext());
@@ -185,8 +191,9 @@ public class scheduless extends Fragment {
         return view;
     }
 
+    // Firebase 시간 순서대로 호출
     public void readData(FirebaseCallback firebaseCallback) {
-        databaseReference.child("Nutji").child("Schedule").child("월요일").orderByChild("StartTime")
+        databaseReference.child("Nutji").child("Schedule").child(day).orderByChild("StartTime")
                 .addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {

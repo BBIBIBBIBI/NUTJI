@@ -124,13 +124,14 @@ public class usersettingss extends Fragment {
                 final String[] items = new String[]{"집", "회사", "학교"};
                 final HashMap result = new HashMap<>();
 
+                // 라디오버튼 다이얼로그 생성
                 AlertDialog.Builder dialog = new AlertDialog.Builder(getActivity());
                 dialog.setTitle("장소를 선택하세요")
                         .setSingleChoiceItems(items, -1, new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialogInterface, int which) {
+                                // which = position
                                 Place = items[which];
-                                //adapter.addItem(new UserListItem(Place, "클릭하세요"));
 
                                 result.put("PlaceName", Place);
                                 result.put("Address", "클릭하세요");
@@ -143,18 +144,19 @@ public class usersettingss extends Fragment {
                                         .addOnSuccessListener(new OnSuccessListener<Void>() {
                                             @Override
                                             public void onSuccess(Void aVoid) {
+                                                // 프래그먼트 초기화 (리사이클러뷰 갱신)
                                                 FragmentTransaction ft = getFragmentManager().beginTransaction();
                                                 ft.detach(usersettingss.this).attach(usersettingss.this).commit();
                                             }
                                         });
-                            }
-                        })
-                        .setNegativeButton("취소", new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialogInterface, int which) {
+                                }
+                            })
+                            .setNegativeButton("취소", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialogInterface, int which) {
 
-                            }
-                        }).create().show();
+                                }
+                            }).create().show();
 
             }
         });
